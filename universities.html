@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universities in Metro Manila - UniFind</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation Header Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo::before {
+            content: '🎓';
+            font-size: 1.2em;
+            background: none;
+            -webkit-text-fill-color: initial;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-links li a:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-links li a:hover::before {
+            left: 0;
+        }
+
+        .nav-links li a.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            gap: 4px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 20px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        select, input {
+            padding: 10px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .university-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .university-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f5;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5em;
+        }
+
+        .state-icon {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .private-icon {
+            background: linear-gradient(135deg, #fa709a, #fee140);
+            color: white;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .universities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .university-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .university-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .university-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .university-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .university-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .university-location {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .programs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .program-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .view-details-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .view-details-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .modal-subtitle {
+            opacity: 0.9;
+            font-size: 1em;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+        }
+
+        .address-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .program-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .program-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .program-name {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .program-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .program-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .slots-available {
+            color: #28a745;
+        }
+
+        .slots-limited {
+            color: #ffc107;
+        }
+
+        .slots-full {
+            color: #dc3545;
+        }
+
+        .tuition-fee {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                gap: 10px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .universities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">UniFind</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="#" class="active">Universities</a></li>
+                <li><a href="programs.html">Programs</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Universities in Metro Manila</h1>
+            <p>Explore top-tier education institutions in the Philippines' National Capital Region</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="typeFilter">University Type</label>
+                <select id="typeFilter" onchange="filterUniversities()">
+                    <option value="all">All Universities</option>
+                    <option value="state">State Universities</option>
+                    <option value="private">Private Universities</option>
+                    <option value="local">Local Universities</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="programFilter">Program Category</label>
+                <select id="programFilter" onchange="filterUniversities()">
+                    <option value="all">All Programs</option>
+                    <option value="engineering">Engineering</option>
+                    <option value="business">Business</option>
+                    <option value="medicine">Medicine</option>
+                    <option value="education">Education</option>
+                    <option value="arts">Arts & Sciences</option>
+                    <option value="law">Law</option>
+                    <option value="it">Information Technology</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="searchFilter">Search University</label>
+                <input type="text" id="searchFilter" placeholder="Search by name..." onkeyup="filterUniversities()">
+            </div>
+        </div>
+
+        <div class="university-sections">
+            <!-- State Universities Section -->
+            <div class="university-section" id="state-section">
+                <div class="section-header">
+                    <div class="section-icon state-icon">🏛️</div>
+                    <h2 class="section-title">State Universities</h2>
+                </div>
+                <div class="universities-grid" id="state-universities"></div>
+            </div>
+
+            <!-- Private Universities Section -->
+            <div class="university-section" id="private-section">
+                <div class="section-header">
+                    <div class="section-icon private-icon">🎓</div>
+                    <h2 class="section-title">Private Universities</h2>
+                </div>
+                <div class="universities-grid" id="private-universities"></div>
+            </div>
+
+            <!-- Local Universities Section -->
+            <div class="university-section" id="local-section">
+                <div class="section-header">
+                    <div class="section-icon private-icon">🏫</div>
+                    <h2 class="section-title">Local Universities & Colleges</h2>
+                </div>
+                <div class="universities-grid" id="local-universities"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="universityModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-subtitle" id="modalSubtitle"></p>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <h3 class="info-title">
+                        <div class="info-icon">📍</div>
+                        Address & Contact
+                    </h3>
+                    <div class="address-info" id="addressInfo"></div>
+                </div>
+                <div class="info-section">
+                    <h3 class="info-title">
+                        <div class="info-icon">📚</div>
+                        Programs & Tuition Fees
+                    </h3>
+                    <div class="programs-grid" id="programsInfo"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const universitiesData = {
+            state: [
+                {
+                    name: "University of the Philippines Diliman",
+                    location: "Diliman, Quezon City",
+                    programs: ["engineering", "medicine", "business", "arts", "law"],
+                    address: "Diliman, Quezon City, Metro Manila 1101",
+                    phone: "+63 2 8981 8500",
+                    email: "info@up.edu.ph",
+                    website: "www.upd.edu.ph",
+                    programDetails: {
+                        "BS Computer Science": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Engineering": { slots: "Limited", tuition: "Free Tuition" },
+                        "Doctor of Medicine": { slots: "Limited", tuition: "Free Tuition" },
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Arts": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Laws": { slots: "Full", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Polytechnic University of the Philippines",
+                    location: "Sta. Mesa, Manila",
+                    programs: ["engineering", "business", "education", "it"],
+                    address: "A. Mabini Campus, Anonas St., Sta. Mesa, Manila 1016",
+                    phone: "+63 2 8335 1PUP",
+                    email: "inquire@pup.edu.ph",
+                    website: "www.pup.edu.ph",
+                    programDetails: {
+                        "BS Information Technology": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Engineering": { slots: "Available", tuition: "₱6,000/sem" },
+                        "BS Business Administration": { slots: "Limited", tuition: "Free Tuition" },
+                        "Bachelor of Education": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Technological University of the Philippines",
+                    location: "Taguig City",
+                    programs: ["engineering", "it", "business"],
+                    address: "Km. 14 East Service Road, South Superhighway, Taguig City 1630",
+                    phone: "+63 2 8301 3001",
+                    email: "info@tup.edu.ph",
+                    website: "www.tup.edu.ph",
+                    programDetails: {
+                        "BS Computer Engineering": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Information Technology": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Industrial Engineering": { slots: "Limited", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Philippine Normal University",
+                    location: "Taft Avenue, Manila",
+                    programs: ["education", "arts"],
+                    address: "Taft Avenue, Ermita, Manila 1000",
+                    phone: "+63 2 8523 4273",
+                    email: "info@pnu.edu.ph",
+                    website: "www.pnu.edu.ph",
+                    programDetails: {
+                        "Bachelor of Elementary Education": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Secondary Education": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Arts in Psychology": { slots: "Limited", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Eulogio Amang Rodriguez Institute of Science and Technology",
+                    location: "Nagtahan, Manila",
+                    programs: ["engineering", "it"],
+                    address: "Nagtahan, Sampaloc, Manila 1008",
+                    phone: "+63 2 8733 9110",
+                    email: "info@earist.edu.ph",
+                    website: "www.earist.edu.ph",
+                    programDetails: {
+                        "BS Computer Engineering": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Information Technology": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Civil Engineering": { slots: "Limited", tuition: "Free Tuition" }
+                    }
+                }
+            ],
+            private: [
+                {
+                    name: "Ateneo de Manila University",
+                    location: "Loyola Heights, Quezon City",
+                    programs: ["business", "engineering", "medicine", "arts", "law"],
+                    address: "Katipunan Ave., Loyola Heights, Quezon City 1108",
+                    phone: "+63 2 8426 6001",
+                    email: "info@ateneo.edu",
+                    website: "www.ateneo.edu",
+                    programDetails: {
+                        "BS Management Engineering": { slots: "Limited", tuition: "₱85,000/sem" },
+                        "Doctor of Medicine": { slots: "Full", tuition: "₱120,000/sem" },
+                        "BS Business Administration": { slots: "Available", tuition: "₱80,000/sem" },
+                        "Bachelor of Arts": { slots: "Available", tuition: "₱75,000/sem" },
+                        "Bachelor of Laws": { slots: "Limited", tuition: "₱90,000/sem" }
+                    }
+                },
+                {
+                    name: "De La Salle University",
+                    location: "Malate, Manila",
+                    programs: ["business", "engineering", "education", "arts", "it"],
+                    address: "2401 Taft Ave., Malate, Manila 1004",
+                    phone: "+63 2 8524 4611",
+                    email: "dlsu-manila@dlsu.edu.ph",
+                    website: "www.dlsu.edu.ph",
+                    programDetails: {
+                        "BS Computer Science": { slots: "Available", tuition: "₱78,000/sem" },
+                        "BS Business Administration": { slots: "Available", tuition: "₱75,000/sem" },
+                        "BS Civil Engineering": { slots: "Limited", tuition: "₱82,000/sem" },
+                        "Bachelor of Education": { slots: "Available", tuition: "₱70,000/sem" }
+                    }
+                },
+                {
+                    name: "University of Santo Tomas",
+                    location: "España, Manila",
+                    programs: ["medicine", "business", "arts", "law", "engineering"],
+                    address: "España Blvd., Sampaloc, Manila 1015",
+                    phone: "+63 2 8740 9700",
+                    email: "rector@ust.edu.ph",
+                    website: "www.ust.edu.ph",
+                    programDetails: {
+                        "Doctor of Medicine": { slots: "Limited", tuition: "₱95,000/sem" },
+                        "BS Business Administration": { slots: "Available", tuition: "₱72,000/sem" },
+                        "Bachelor of Laws": { slots: "Available", tuition: "₱85,000/sem" },
+                        "BS Engineering": { slots: "Available", tuition: "₱76,000/sem" }
+                    }
+                },
+                {
+                    name: "Mapúa University",
+                    location: "Intramuros, Manila",
+                    programs: ["engineering", "it", "business"],
+                    address: "658 Muralla St., Intramuros, Manila 1002",
+                    phone: "+63 2 8247 5000",
+                    email: "info@mapua.edu.ph",
+                    website: "www.mapua.edu.ph",
+                    programDetails: {
+                        "BS Computer Engineering": { slots: "Available", tuition: "₱88,000/sem" },
+                        "BS Information Technology": { slots: "Available", tuition: "₱85,000/sem" },
+                        "BS Civil Engineering": { slots: "Limited", tuition: "₱90,000/sem" },
+                        "BS Business Administration": { slots: "Available", tuition: "₱82,000/sem" }
+                    }
+                },
+                {
+                    name: "Adamson University",
+                    location: "Ermita, Manila",
+                    programs: ["engineering", "business", "education", "it"],
+                    address: "900 San Marcelino St., Ermita, Manila 1000",
+                    phone: "+63 2 8524 2011",
+                    email: "info@adamson.edu.ph",
+                    website: "www.adamson.edu.ph",
+                    programDetails: {
+                        "BS Chemical Engineering": { slots: "Available", tuition: "₱65,000/sem" },
+                        "BS Information Technology": { slots: "Available", tuition: "₱62,000/sem" },
+                        "BS Business Administration": { slots: "Available", tuition: "₱60,000/sem" },
+                        "Bachelor of Education": { slots: "Limited", tuition: "₱58,000/sem" }
+                    }
+                },
+                {
+                    name: "Far Eastern University",
+                    location: "Sampaloc, Manila",
+                    programs: ["business", "medicine", "arts", "law", "it"],
+                    address: "Nicanor Reyes St., Sampaloc, Manila 1015",
+                    phone: "+63 2 8849 4000",
+                    email: "info@feu.edu.ph",
+                    website: "www.feu.edu.ph",
+                    programDetails: {
+                        "BS Accountancy": { slots: "Available", tuition: "₱68,000/sem" },
+                        "Doctor of Medicine": { slots: "Limited", tuition: "₱110,000/sem" },
+                        "Bachelor of Arts in Communication": { slots: "Available", tuition: "₱60,000/sem" },
+                        "Bachelor of Laws": { slots: "Available", tuition: "₱80,000/sem" }
+                    }
+                },
+                {
+                    name: "University of the East",
+                    location: "Sampaloc, Manila",
+                    programs: ["business", "engineering", "medicine", "arts"],
+                    address: "2219 C.M. Recto Ave., Sampaloc, Manila 1008",
+                    phone: "+63 2 8735 5471",
+                    email: "info@ue.edu.ph",
+                    website: "www.ue.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "₱65,000/sem" },
+                        "BS Civil Engineering": { slots: "Available", tuition: "₱70,000/sem" },
+                        "Doctor of Medicine": { slots: "Limited", tuition: "₱100,000/sem" },
+                        "Bachelor of Arts in Psychology": { slots: "Available", tuition: "₱60,000/sem" }
+                    }
+                },
+                {
+                    name: "San Beda University",
+                    location: "Mendiola, Manila",
+                    programs: ["business", "law", "arts", "education"],
+                    address: "638 Mendiola St., San Miguel, Manila 1005",
+                    phone: "+63 2 8840 8600",
+                    email: "info@sanbeda.edu.ph",
+                    website: "www.sanbeda.edu.ph",
+                    programDetails: {
+                        "BS Accountancy": { slots: "Limited", tuition: "₱75,000/sem" },
+                        "Bachelor of Laws": { slots: "Available", tuition: "₱90,000/sem" },
+                        "Bachelor of Arts in Political Science": { slots: "Available", tuition: "₱68,000/sem" },
+                        "Bachelor of Secondary Education": { slots: "Available", tuition: "₱65,000/sem" }
+                    }
+                },
+                {
+                    name: "Colegio de San Juan de Letran",
+                    location: "Intramuros, Manila",
+                    programs: ["business", "education", "arts", "it"],
+                    address: "151 Muralla St., Intramuros, Manila 1002",
+                    phone: "+63 2 8527 7693",
+                    email: "info@letran.edu.ph",
+                    website: "www.letran.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "₱65,000/sem" },
+                        "Bachelor of Elementary Education": { slots: "Available", tuition: "₱60,000/sem" },
+                        "Bachelor of Arts in Communication": { slots: "Limited", tuition: "₱62,000/sem" },
+                        "BS Information Technology": { slots: "Available", tuition: "₱68,000/sem" }
+                    }
+                },
+                {
+                    name: "Centro Escolar University",
+                    location: "Mendiola, Manila",
+                    programs: ["medicine", "business", "arts", "education"],
+                    address: "9 Mendiola St., San Miguel, Manila 1005",
+                    phone: "+63 2 8735 6861",
+                    email: "info@ceu.edu.ph",
+                    website: "www.ceu.edu.ph",
+                    programDetails: {
+                        "Doctor of Dental Medicine": { slots: "Limited", tuition: "₱95,000/sem" },
+                        "BS Business Administration": { slots: "Available", tuition: "₱65,000/sem" },
+                        "Bachelor of Arts in Psychology": { slots: "Available", tuition: "₱60,000/sem" },
+                        "Bachelor of Secondary Education": { slots: "Available", tuition: "₱58,000/sem" }
+                    }
+                }
+            ],
+            local: [
+                {
+                    name: "University of the City of Manila (Pamantasan ng Lungsod ng Maynila)",
+                    location: "Intramuros, Manila",
+                    programs: ["business", "arts", "medicine", "law"],
+                    address: "General Luna St., Intramuros, Manila 1002",
+                    phone: "+63 2 8527 7941",
+                    email: "info@plm.edu.ph",
+                    website: "www.plm.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Arts in Political Science": { slots: "Available", tuition: "Free Tuition" },
+                        "Doctor of Medicine": { slots: "Limited", tuition: "Free Tuition" },
+                        "Bachelor of Laws": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "City University of Pasay",
+                    location: "Pasay City",
+                    programs: ["business", "education", "it"],
+                    address: "Kabayanihan St., Pasay City 1300",
+                    phone: "+63 2 8883 4275",
+                    email: "info@cup.edu.ph",
+                    website: "www.cup.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Elementary Education": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Information Technology": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Universidad de Manila",
+                    location: "Manila",
+                    programs: ["business", "education", "arts"],
+                    address: "Mehan Garden, Manila 1000",
+                    phone: "+63 2 8523 8275",
+                    email: "info@udm.edu.ph",
+                    website: "www.udm.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Secondary Education": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Arts in Communication": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Polytechnic University of the Philippines - Parañaque",
+                    location: "Parañaque City",
+                    programs: ["business", "education"],
+                    address: "Kabihasnan, Parañaque City 1700",
+                    phone: "+63 2 8826 1264",
+                    email: "pup.paranaque@pup.edu.ph",
+                    website: "www.pup.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Secondary Education": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Taguig City University",
+                    location: "Taguig City",
+                    programs: ["business", "education", "it"],
+                                        address: "Gen. Santos Ave., Taguig City 1630",
+                    phone: "+63 2 8838 3101",
+                    email: "info@tcu.edu.ph",
+                    website: "www.tcu.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Elementary Education": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Information Technology": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Valenzuela City Polytechnic College",
+                    location: "Valenzuela City",
+                    programs: ["business", "education", "it"],
+                    address: "Maysan Road, Valenzuela City 1440",
+                    phone: "+63 2 8292 0201",
+                    email: "info@vcpc.edu.ph",
+                    website: "www.vcpc.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Technical-Vocational Teacher Education": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Information Technology": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Muntinlupa Polytechnic College",
+                    location: "Muntinlupa City",
+                    programs: ["business", "education", "it"],
+                    address: "NBP Reservation, Poblacion, Muntinlupa City 1776",
+                    phone: "+63 2 8862 2476",
+                    email: "info@mpc.edu.ph",
+                    website: "www.mpc.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Secondary Education": { slots: "Available", tuition: "Free Tuition" },
+                        "BS Computer Science": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Navotas Polytechnic College",
+                    location: "Navotas City",
+                    programs: ["business", "education"],
+                    address: "Bangus St., NBBS, Navotas City 1485",
+                    phone: "+63 2 8286 5124",
+                    email: "info@npc.edu.ph",
+                    website: "www.npc.edu.ph",
+                    programDetails: {
+                        "BS Entrepreneurship": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Technical-Vocational Teacher Education": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                },
+                {
+                    name: "Malabon University",
+                    location: "Malabon City",
+                    programs: ["business", "education", "arts"],
+                    address: "P. Aquino Ave., Longos, Malabon City 1470",
+                    phone: "+63 2 8281 8076",
+                    email: "info@mu.edu.ph",
+                    website: "www.mu.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "₱15,000/sem" },
+                        "Bachelor of Elementary Education": { slots: "Available", tuition: "₱12,000/sem" },
+                        "Bachelor of Arts in Psychology": { slots: "Available", tuition: "₱14,000/sem" }
+                    }
+                },
+                {
+                    name: "Caloocan City Business High School - College Department",
+                    location: "Caloocan City",
+                    programs: ["business", "education"],
+                    address: "10th Ave., Grace Park, Caloocan City 1400",
+                    phone: "+63 2 8361 7245",
+                    email: "info@ccbhs.edu.ph",
+                    website: "www.ccbhs.edu.ph",
+                    programDetails: {
+                        "BS Business Administration": { slots: "Available", tuition: "Free Tuition" },
+                        "Bachelor of Secondary Education": { slots: "Available", tuition: "Free Tuition" }
+                    }
+                }
+            ]
+        };
+
+        // Initialize the page with university cards
+        document.addEventListener('DOMContentLoaded', function() {
+            displayUniversities();
+            setupModal();
+            setupMobileMenu();
+        });
+
+        function displayUniversities() {
+            displayUniversitySection('state');
+            displayUniversitySection('private');
+            displayUniversitySection('local');
+        }
+
+        function displayUniversitySection(type) {
+            const sectionId = `${type}-universities`;
+            const container = document.getElementById(sectionId);
+            container.innerHTML = '';
+
+            universitiesData[type].forEach(university => {
+                const card = createUniversityCard(university, type);
+                container.appendChild(card);
+            });
+        }
+
+        function createUniversityCard(university, type) {
+            const card = document.createElement('div');
+            card.className = 'university-card';
+            card.setAttribute('data-type', type);
+            card.setAttribute('data-programs', university.programs.join(','));
+            card.setAttribute('data-name', university.name.toLowerCase());
+
+            const name = document.createElement('h3');
+            name.className = 'university-name';
+            name.textContent = university.name;
+
+            const location = document.createElement('p');
+            location.className = 'university-location';
+            location.innerHTML = `<span>📍</span> ${university.location}`;
+
+            const programs = document.createElement('div');
+            programs.className = 'programs';
+
+            // Display first 3 programs as tags
+            const displayedPrograms = university.programs.slice(0, 3);
+            displayedPrograms.forEach(program => {
+                const tag = document.createElement('span');
+                tag.className = 'program-tag';
+                tag.textContent = program.charAt(0).toUpperCase() + program.slice(1);
+                programs.appendChild(tag);
+            });
+
+            if (university.programs.length > 3) {
+                const moreTag = document.createElement('span');
+                moreTag.className = 'program-tag';
+                moreTag.textContent = `+${university.programs.length - 3} more`;
+                programs.appendChild(moreTag);
+            }
+
+            const button = document.createElement('button');
+            button.className = 'view-details-btn';
+            button.textContent = 'View Details';
+            button.onclick = function() {
+                openModal(university);
+            };
+
+            card.appendChild(name);
+            card.appendChild(location);
+            card.appendChild(programs);
+            card.appendChild(button);
+
+            return card;
+        }
+
+        function filterUniversities() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const programFilter = document.getElementById('programFilter').value;
+            const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+
+            // Show/hide sections based on type filter
+            document.getElementById('state-section').style.display = 
+                (typeFilter === 'all' || typeFilter === 'state') ? 'block' : 'none';
+            document.getElementById('private-section').style.display = 
+                (typeFilter === 'all' || typeFilter === 'private') ? 'block' : 'none';
+            document.getElementById('local-section').style.display = 
+                (typeFilter === 'all' || typeFilter === 'local') ? 'block' : 'none';
+
+            // Filter cards in each visible section
+            filterCardsInSection('state', programFilter, searchFilter);
+            filterCardsInSection('private', programFilter, searchFilter);
+            filterCardsInSection('local', programFilter, searchFilter);
+        }
+
+        function filterCardsInSection(type, programFilter, searchFilter) {
+            const section = document.getElementById(`${type}-universities`);
+            const cards = section.getElementsByClassName('university-card');
+
+            for (let card of cards) {
+                const matchesProgram = programFilter === 'all' || 
+                    card.getAttribute('data-programs').includes(programFilter);
+                const matchesSearch = card.getAttribute('data-name').includes(searchFilter);
+
+                card.style.display = (matchesProgram && matchesSearch) ? 'block' : 'none';
+            }
+        }
+
+        function setupModal() {
+            const modal = document.getElementById('universityModal');
+            const closeBtn = document.querySelector('.close');
+
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            };
+
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        function openModal(university) {
+            const modal = document.getElementById('universityModal');
+            document.getElementById('modalTitle').textContent = university.name;
+            document.getElementById('modalSubtitle').textContent = university.location;
+
+            // Set address info
+            const addressInfo = `
+                <p><strong>Address:</strong> ${university.address}</p>
+                <p><strong>Phone:</strong> ${university.phone}</p>
+                <p><strong>Email:</strong> ${university.email}</p>
+                <p><strong>Website:</strong> <a href="https://${university.website}" target="_blank">${university.website}</a></p>
+            `;
+            document.getElementById('addressInfo').innerHTML = addressInfo;
+
+            // Set programs info
+            const programsContainer = document.getElementById('programsInfo');
+            programsContainer.innerHTML = '';
+
+            for (const [program, details] of Object.entries(university.programDetails)) {
+                const programCard = document.createElement('div');
+                programCard.className = 'program-card';
+
+                const programName = document.createElement('h4');
+                programName.className = 'program-name';
+                programName.textContent = program;
+
+                const programDetails = document.createElement('div');
+                programDetails.className = 'program-details';
+
+                const slotsDetail = document.createElement('div');
+                slotsDetail.className = 'program-detail';
+                slotsDetail.innerHTML = `
+                    <span class="detail-label">Slots:</span>
+                    <span class="detail-value slots-${details.slots.toLowerCase()}">${details.slots}</span>
+                `;
+
+                const tuitionDetail = document.createElement('div');
+                tuitionDetail.className = 'program-detail';
+                tuitionDetail.innerHTML = `
+                    <span class="detail-label">Tuition:</span>
+                    <span class="detail-value tuition-fee">${details.tuition}</span>
+                `;
+
+                programDetails.appendChild(slotsDetail);
+                programDetails.appendChild(tuitionDetail);
+
+                programCard.appendChild(programName);
+                programCard.appendChild(programDetails);
+
+                programsContainer.appendChild(programCard);
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function setupMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            mobileMenuBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

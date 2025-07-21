@@ -1,0 +1,115 @@
+function formatProgramName(program) {
+            const programNames = {
+                'engineering': 'Engineering',
+                'business': 'Business',
+                'medicine': 'Medicine',
+                'education': 'Education',
+                'arts': 'Arts & Sciences',
+                'law': 'Law',
+                'it': 'Information Technology'
+            };
+            return programNames[program] || program;
+        }
+
+        function filterUniversities() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const programFilter = document.getElementById('programFilter').value;
+            const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+
+            const stateSection = document.getElementById('state-section');
+            const privateSection = document.getElementById('private-section');
+            const allCards = document.querySelectorAll('.university-card');
+
+            allCards.forEach(card => {
+                let show = true;
+
+                // Type filter
+                if (typeFilter !== 'all' && card.dataset.type !== typeFilter) {
+                    show = false;
+                }
+
+                // Program filter
+                if (programFilter !== 'all' && !card.dataset.programs.includes(programFilter)) {
+                    show = false;
+                }
+
+                // Search filter
+                if (searchFilter && !card.dataset.name.includes(searchFilter)) {
+                    show = false;
+                }
+
+                card.style.display = show ? 'block' : 'none';
+            });
+
+            // Hide sections if no cards are visible
+            const stateCards = stateSection.querySelectorAll('.university-card[style*="block"], .university-card:not([style*="none"])');
+            const privateCards = privateSection.querySelectorAll('.university-card[style*="block"], .university-card:not([style*="none"])');
+
+            stateSection.style.display = (typeFilter === 'private' || stateCards.length === 0) ? 'none' : 'block';
+            privateSection.style.display = (typeFilter === 'state' || privateCards.length === 0) ? 'none' : 'block';
+        }
+
+        function openModal(universityName, type) {
+            const university = universitiesData[type].find(u => u.name === universityName);
+            const modal = document.getElementById('universityModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSubtitle = document.getElementById('modalSubtitle');
+            const addressInfo = document.getElementById('addressInfo');
+            const programsInfo = document.getElementById('programsInfo');
+
+            modalTitle.textContent = university.name;
+            modalSubtitle.textContent = `${type === 'state' ? 'State' : 'Private'} University • ${university.location}`;
+
+            addressInfo.innerHTML = `
+                <div style="margin-bottom: 15px;"><strong>📍 Address:</strong> ${university.address}</div>
+                <div style="margin-bottom: 15px;"><strong>📞 Phone:</strong> ${university.phone}</div>
+                <div style="margin-bottom: 15px;"><strong>✉️ Email:</strong> ${university.email}</div>
+                <div><strong>🌐 Website:</strong> ${university.website}</div>
+            `;
+
+            programsInfo.innerHTML = '';
+            Object.entries(university.programDetails).forEach(([program, details]) => {
+                const programCard = document.createElement('div');
+                programCard.className = 'program-card';
+                
+                let slotsClass = 'slots-available';
+                if (details.slots === 'Limited') slotsClass = 'slots-limited';
+                if (details.slots === 'Full') slotsClass = 'slots-full';
+
+                programCard.innerHTML = `
+                    <div class="program-name">${program}</div>
+                    <div class="program-details">
+                        <div class="program-detail">
+                            <span class="detail-label">Slots:</span>
+                            <span class="detail-value ${slotsClass}">${details.slots}</span>
+                        </div>
+                        <div class="program-detail">
+                            <span class="detail-label">Tuition Fee:</span>
+                            <span class="detail-value tuition-fee">${details.tuition}</span>
+                        </div>
+                    </div>
+                `;
+                programsInfo.appendChild(programCard);
+            });
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('universityModal').style.display = 'none';
+        }
+
+        // Event listeners
+        document.querySelector('.close').onclick = closeModal;
+        window.onclick = function(event) {
+            const modal = document.getElementById('universityModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize the page
+        initializeUniversities();
+    </script>
+</body>
+</html>
