@@ -12,96 +12,73 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
 
-        /* Navigation Header Styles */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
-        }
-
-        .nav-container {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding: 0 20px;
         }
 
+        /* Header - Exact same styling as index.html */
+        header {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
         .logo {
-            font-size: 1.8em;
+            font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: white;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.5rem;
         }
 
         .logo::before {
-            content: '🎓';
-            font-size: 1.2em;
-            background: none;
-            -webkit-text-fill-color: initial;
+            content: "🎓";
+            font-size: 2rem;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 30px;
-            align-items: center;
+            gap: 2rem;
         }
 
-        .nav-links li a {
+        .nav-links a {
+            color: white;
             text-decoration: none;
-            color: #333;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 25px;
+            font-weight: 500;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
         }
 
-        .nav-links li a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            transition: left 0.3s ease;
-            z-index: -1;
-        }
-
-        .nav-links li a:hover {
-            color: white;
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        .nav-links li a:hover::before {
-            left: 0;
-        }
-
-        .nav-links li a.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         /* Mobile Menu Button */
@@ -116,7 +93,7 @@
         .mobile-menu-btn span {
             width: 25px;
             height: 3px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: white;
             border-radius: 2px;
             transition: all 0.3s ease;
         }
@@ -135,7 +112,7 @@
 
         /* Main Content */
         .main-content {
-            padding: 40px 20px 20px;
+            padding: 120px 20px 20px;
         }
 
         .header {
@@ -145,7 +122,7 @@
 
         .header h1 {
             font-size: 2.5em;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(45deg, #fff, #a8edea);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -153,12 +130,12 @@
         }
 
         .header p {
-            color: #666;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 1.1em;
         }
 
         .filters {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -203,7 +180,7 @@
         }
 
         .university-section {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -520,11 +497,11 @@
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background: rgba(255, 255, 255, 0.98);
+                background: rgba(0, 0, 0, 0.9);
                 backdrop-filter: blur(10px);
                 flex-direction: column;
                 padding: 20px;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
                 gap: 10px;
             }
 
@@ -562,27 +539,47 @@
                 font-size: 2em;
             }
         }
+
+           .logout-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 500;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 0, 0, 0.3) !important;
+    transform: translateY(-2px) !important;
+}
+
     </style>
 </head>
 <body>
     <!-- Navigation Header -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">UniFind</a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="home.html">Home</a></li>
-                <li><a href="#" class="active">Universities</a></li>
-                <li><a href="programs.html">Programs</a></li>
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">Romeros UniFind</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="universities.html" class="active">Universities</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                 <li><a href="#" class="logout-btn" id="logoutBtn">Logout</a></li>
+
+
             </ul>
-            <div class="mobile-menu-btn" id="mobileMenuBtn">
+            <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -676,6 +673,7 @@
             </div>
         </div>
     </div>
+
 
     <script>
         const universitiesData = {
@@ -1234,6 +1232,13 @@
                 navLinks.classList.toggle('active');
             });
         }
+
+                // Logout functionality
+document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    // Here you can add any logout logic (clearing sessions, etc.) before redirecting
+    window.location.href = 'login.html';
+});
     </script>
 </body>
 </html>
