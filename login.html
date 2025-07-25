@@ -333,6 +333,12 @@
     </div>
 
     <script>
+        // Admin credentials
+        const ADMIN_CREDENTIALS = {
+            email: "admin@romeros.com",
+            password: "romeros230419"
+        };
+
         function switchToRegister() {
             document.getElementById('loginForm').classList.remove('active');
             document.getElementById('registerForm').classList.add('active');
@@ -418,12 +424,22 @@
                 // Simulate login process
                 setTimeout(() => {
                     showLoading(this, false);
-                    showSuccess('loginSuccess');
                     
-                    // Redirect to index.html after successful login
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 1000);
+                    // Check for admin credentials
+                    if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+                        showSuccess('loginSuccess');
+                        // Redirect to admin panel
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 1000);
+                    } else {
+                        // Regular user login
+                        showSuccess('loginSuccess');
+                        // Redirect to index.html for regular users
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    }
                 }, 1500);
             }
         });
