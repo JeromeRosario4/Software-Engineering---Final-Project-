@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniFind Manila - Discover Your Future University</title>
+    <title>Romeros Unifind - Discover Your Future University</title>
     <style>
         * {
             margin: 0;
@@ -491,15 +491,34 @@
                 display: none;
             }
         }
+
+        .logout-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 500;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 0, 0, 0.3) !important;
+    transform: translateY(-2px) !important;
+}
     </style>
 </head>
 <body>
     <header>
         <nav class="container">
-            <a href="#" class="logo">UniFind Manila</a>
+            <a href="#" class="logo">Romeros Unifind</a>
             <ul class="nav-links">
                 <li><a href="universities.html">Universities</a></li>
                 <li><a href="about.html">About</a></li>
+                <li><a href="#" class="logout-btn" id="logoutBtn">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -618,7 +637,7 @@
 
         <section class="features">
             <div class="container">
-                <h2>Why Choose UniFind Manila?</h2>
+                <h2>Why Choose Romeros Unifind?</h2>
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">🔍</div>
@@ -751,7 +770,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 UniFind Manila. Empowering students to find their perfect university match.</p>
+            <p>&copy; 2025 Romeros Unifind. Empowering students to find their perfect university match.</p>
         </div>
     </footer>
 
@@ -1050,6 +1069,13 @@
         document.querySelectorAll('.university-card').forEach(card => {
             observer.observe(card);
         });
+
+        // Logout functionality
+document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    // Here you can add any logout logic (clearing sessions, etc.) before redirecting
+    window.location.href = 'login.html';
+});
     </script>
 </body>
 </html>
